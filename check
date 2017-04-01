@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+
+exec 3>&1
+exec 1>&2
+
 set +x
 
 payload=$(mktemp /tmp/resource-in.XXXXXX)
@@ -14,8 +19,8 @@ latest_version="$(jq -r '.version.pkg' < "${payload}")"
 
 if [[ ${latest_version} == 'null' ]]; then
   curl "${base_uri}/${origin}/${name}/latest" 2>/dev/null | \
-    jq '.ident | [ .origin, .name, .version, .release ] | [{pkg: join("/")}]'
+    jq '.ident | [ .origin, .name, .version, .release ] | [{pkg: join("/")}]' >&3
 else
   curl "${base_uri}/${origin}/${name}" 2>/dev/null | \
-    jq --arg current ${latest_version} '[ .package_list[] | { pkg: [ .origin, .name, .version, .release ] | join("/") | select(. >= $current) } ]'
+    jq --arg current ${latest_version} '[ .package_list[] | { pkg: [ .origin, .name, .version, .release ] | join("/") | select(. >= $current) } ]' >&3
 fi

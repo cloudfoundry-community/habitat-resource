@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+
+exec 3>&1
+exec 1>&2
+
 set +x
 
 payload=$(mktemp /tmp/resource-in.XXXXXX)
@@ -25,4 +30,4 @@ pkg="$(echo ${pkg/-x86_64-linux.hart} | sed 's#-#/#g')"
 
 hab pkg upload $file
 
-jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}'
+jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}' >&3

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+
+exec 3>&1
+exec 1>&2
+
 set +x
 
 payload=$(mktemp /tmp/resource-in.XXXXXX)
@@ -16,4 +21,4 @@ file_name="$(echo ${pkg} | sed 's#/#-#g')-x86_64-linux.hart"
 
 wget -O "${1}/${file_name}" "${base_uri}/${pkg}/download"
 
-jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}'
+jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}' >&3
