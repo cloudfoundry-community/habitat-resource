@@ -1,0 +1,44 @@
+---
+meta:
+  dockerhub:
+    email: (( vault "secret/pipelines/habitat-resource/dockerhub:email" ))
+    username: (( vault "secret/pipelines/habitat-resource/dockerhub:username" ))
+    password: (( vault "secret/pipelines/habitat-resource/dockerhub:password" ))
+
+groups:
+- name: images
+  jobs: [build-habitat-resource-image]
+
+jobs:
+- name: build-habitat-resource-image
+  public: true
+  plan:
+  - aggregate:
+    - {get: habitat-resource, trigger: true}
+    - {get: habitat-release, trigger: true}
+  - put: habitat-resource-image
+    params:
+      build: habitat-resource/
+      tag: habitat-release/version
+      tag_as_latest: true
+
+resources:
+- name: habitat-resource
+  type: git
+  source:
+    uri: https://github.com/starkandwayne/habitat-resource.git
+
+- name: habitat-release
+  type: github-release
+  source:
+    user:         habitat-sh
+    repository:   habitat
+
+- name: habitat-resource-image
+  type: docker-image
+  source:
+    email: (( grab meta.dockerhub.email ))
+    username: (( grab meta.dockerhub.username ))
+    password: (( grab meta.dockerhub.password ))
+    repository: starkandwayne/habitat-resource
+

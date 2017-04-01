@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PIPELINE=$(cd $(dirname ${BASH_SOURCE[0]}) ; pwd)
+
+pushd $PIPELINE >/dev/null
+  trap "rm -f ${PIPELINE}/.deploy.yml" INT QUIT TERM EXIT
+  spruce merge base.yml > .deploy.yml  && \
+    REDACT=yes spruce merge --prune meta base.yml > pipeline.yml && \
+    fly --target sw set-pipeline --pipeline habitat-resource --config .deploy.yml     &&
+    fly --target sw unpause-pipeline --pipeline habitat-resource
+
+  rm -rf packages
+popd >/dev/null
