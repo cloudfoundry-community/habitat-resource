@@ -27,7 +27,7 @@ result="$(jq -r '.params.result' < "${payload}")"
 cd "${1}/${result}"
 
 file=$(ls *.hart)
-pkg="$(echo ${pkg/-x86_64-linux.hart} | sed 's#-#/#g')"
+pkg="$(echo ${file/-x86_64-linux.hart} | sed 's#-#/#g')"
 
 hab pkg upload $file
 
