@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+cd "${1}"
+
+exec 3>&1
+exec 1>&2
+set +x
+
+# for jq
+PATH=/usr/local/bin:$PATH
+
+payload=$(mktemp /tmp/resource-in.XXXXXX)
+
+cat > "${payload}" <&0
+
+webhook_url="$(jq -r '.source.url' < "${payload}")"
+allow_insecure="$(jq -r '.source.insecure // "false"' < "${payload}")"
+raw_ca_certs=$(jq -r '.source.ca_certs // []' < $payload)
+
+text_file="$(jq -r '.params.text_file // ""' < "${payload}")"
+text="$(jq '(.params.text // "${TEXT_FILE_CONTENT}")' < "${payload}")"
+username="$(jq '(.params.username // null)' < "${payload}")"
+icon_url="$(jq '(.params.icon_url // null)' < "${payload}")"
+icon_emoji="$(jq '(.params.icon_emoji // null)' < "${payload}")"
+
+channels="$(jq -r '(.params.channel // null)' < "${payload}")"
+attachments=$(jq -r '(.params.attachments // null)' < $payload)
+
+debug="$(jq -r '.params.debug // "false"' < "${payload}")"
+show_metadata="$(jq -r '.params.metadata // "false"' < "${payload}")"
+show_payload="$(jq -r '.params.payload_in_metadata // "false"' < "${payload}")"
+silent="$(jq -r '.params.silent // "false"' < "${payload}")"
+always_notify="$(jq -r '.params.always_notify // "false"' < "${payload}")"
+redact_hook="$(jq -r '.params.redact_hook_url // "true"' < "${payload}")"
+
+
