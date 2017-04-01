@@ -1,4 +1,19 @@
 #!/bin/bash
 
-echo '{"version":{"ref":"none"}}'
+set +x
 
+payload=$(mktemp /tmp/resource-in.XXXXXX)
+
+cat > "${payload}" <&0
+
+base_uri="https://willem.habitat.sh/v1/depot/pkgs"
+origin="$(jq -r '.source.origin' < "${payload}")"
+name="$(jq -r '.source.name' < "${payload}")"
+
+pkg="$(jq -r '.version.pkg' < "${payload}")"
+
+file_name="$(echo ${pkg} | sed 's#/#-#g')-x86_64-linux.hart"
+
+wget -O "${1}/${file_name}" "${base_uri}/${pkg}/download"
+
+jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}'
