@@ -23,6 +23,12 @@ ${HAB_ORIGIN_KEY}
 EOF
 
 result="$(jq -r '.params.result' < "${payload}")"
+cd ${1}
+pwd
+ls
+echo ${result}
+ls ${result}
+echo "DONE DEBUGGING"
 cd "${1}/${result}"
 
 file=$(ls *.hart)
