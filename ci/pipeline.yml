@@ -23,6 +23,7 @@ resources:
   type: git
 - name: habitat-release
   source:
+    access_token: REDACTED
     repository: habitat
     user: habitat-sh
   type: github-release

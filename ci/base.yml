@@ -4,6 +4,8 @@ meta:
     email: (( vault "secret/pipelines/habitat-resource/dockerhub:email" ))
     username: (( vault "secret/pipelines/habitat-resource/dockerhub:username" ))
     password: (( vault "secret/pipelines/habitat-resource/dockerhub:password" ))
+  github:
+    access_token: (( vault "secret/pipelines/habitat-resource/github:access_token" ))
 
 groups:
 - name: images
@@ -33,6 +35,7 @@ resources:
   source:
     user:         habitat-sh
     repository:   habitat
+    access_token: (( grab meta.github.access_token ))
 
 - name: habitat-resource-image
   type: docker-image
