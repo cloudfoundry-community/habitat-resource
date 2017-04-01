@@ -16,7 +16,8 @@ cat <<EOF | hab origin key import
 ${HAB_ORIGIN_KEY}
 EOF
 
-cd $1
+result="$(jq -r '.params.result' < "${payload}")"
+cd "${1}/${result}"
 
 file=$(ls *.hart)
 pkg="$(echo ${pkg/-x86_64-linux.hart} | sed 's#-#/#g')"
