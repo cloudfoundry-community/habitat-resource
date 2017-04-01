@@ -20,11 +20,8 @@ name="$(jq -r '.source.name' < "${payload}")"
 
 export HAB_ORIGIN=${origin}
 export HAB_AUTH_TOKEN="$(jq -r '.source.auth_token' < "${payload}")"
-HAB_ORIGIN_KEY="$(jq -r '.source.origin_key' < "${payload}")"
 
-cat <<EOF | hab origin key import
-${HAB_ORIGIN_KEY}
-EOF
+hab origin key download ${origin}
 
 result="$(jq -r '.params.result' < "${payload}")"
 cd "${1}/${result}"
