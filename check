@@ -7,7 +7,7 @@ exec 1>&2
 
 set +x
 
-payload=$(mktemp /tmp/resource-in.XXXXXX)
+payload=$(mktemp /tmp/resource-check.XXXXXX)
 
 cat > "${payload}" <&0
 

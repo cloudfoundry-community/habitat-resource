@@ -8,6 +8,10 @@ exec 1>&2
 set +x
 
 payload=$(mktemp /tmp/resource-in.XXXXXX)
+keys_cache=$(mktemp /tmp/hab_cache_keys_path.XXXXXX)
+trap "rm -f ${keys_cahce}" INT QUIT TERM EXIT
+export HAB_CACHE_KEYS_PATH=${keys_cache}
+
 
 cat > "${payload}" <&0
 
@@ -23,12 +27,6 @@ ${HAB_ORIGIN_KEY}
 EOF
 
 result="$(jq -r '.params.result' < "${payload}")"
-cd ${1}
-pwd
-ls
-echo ${result}
-ls ${result}
-echo "DONE DEBUGGING"
 cd "${1}/${result}"
 
 file=$(ls *.hart)
