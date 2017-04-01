@@ -18,7 +18,7 @@ jobs:
     - {get: habitat-release, trigger: true}
   - put: habitat-resource-image
     params:
-      build: habitat-resource/
+      build: habitat-resource
       tag: habitat-release/version
       tag_as_latest: true
 
