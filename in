@@ -12,8 +12,6 @@ payload=$(mktemp /tmp/resource-in.XXXXXX)
 cat > "${payload}" <&0
 
 base_uri="https://willem.habitat.sh/v1/depot/pkgs"
-origin="$(jq -r '.source.origin' < "${payload}")"
-name="$(jq -r '.source.name' < "${payload}")"
 
 pkg="$(jq -r '.version.pkg' < "${payload}")"
 
