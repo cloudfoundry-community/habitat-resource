@@ -19,7 +19,7 @@ jobs:
 resources:
 - name: habitat-resource
   source:
-    uri: https://github.com/starkandwayne/habitat-resource.git
+    uri: https://github.com/cloudfoundry-community/habitat-resource.git
   type: git
 - name: habitat-release
   source:
@@ -31,7 +31,7 @@ resources:
   source:
     email: REDACTED
     password: REDACTED
-    repository: starkandwayne/habitat-resource
+    repository: cfcommunity/habitat-resource
     username: REDACTED
   type: docker-image
 

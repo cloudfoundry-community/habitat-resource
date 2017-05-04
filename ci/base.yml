@@ -28,7 +28,7 @@ resources:
 - name: habitat-resource
   type: git
   source:
-    uri: https://github.com/starkandwayne/habitat-resource.git
+    uri: https://github.com/cloudfoundry-community/habitat-resource.git
 
 - name: habitat-release
   type: github-release
@@ -43,5 +43,5 @@ resources:
     email: (( grab meta.dockerhub.email ))
     username: (( grab meta.dockerhub.username ))
     password: (( grab meta.dockerhub.password ))
-    repository: starkandwayne/habitat-resource
+    repository: cfcommunity/habitat-resource
 
