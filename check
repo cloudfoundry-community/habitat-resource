@@ -18,10 +18,7 @@ version="$(jq -r '.source.version // ""' < "${payload}")"
 if [[ ${version} != "" ]]; then
   version="/${version}"
 fi
-channel="$(jq -r '.source.channel // ""' < "${payload}")"
-if [[ ${channel} != "" ]]; then
-  channel="unstable"
-fi
+channel="$(jq -r '.source.channel // "unstable"' < "${payload}")"
 
 latest_version="$(jq -r '.version.pkg' < "${payload}")"
 

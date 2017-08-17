@@ -17,6 +17,10 @@ cat > "${payload}" <&0
 
 origin="$(jq -r '.source.origin' < "${payload}")"
 name="$(jq -r '.source.name' < "${payload}")"
+channel="$(jq -r '.params.channel // ""' < "${payload}")"
+if [[ ${channel} = "" ]]; then
+  channel="$(jq -r '.source.channel // "unstable"' < "${payload}")"
+fi
 
 export HAB_ORIGIN=${origin}
 export HAB_AUTH_TOKEN="$(jq -r '.source.auth_token' < "${payload}")"
@@ -31,6 +35,6 @@ pkg=${file/-x86_64-linux.hart}
 pkg=${pkg#$origin-$name-}
 pkg="${origin}/${name}/$(echo ${pkg} | sed "s#-#/#g")"
 
-hab pkg upload $file
+hab pkg upload -c ${channel} $file
 
 jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}' >&3

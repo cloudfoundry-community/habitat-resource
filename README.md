@@ -4,11 +4,11 @@ a Concourse resource for publishing Habitat artifacts.
 
 ## Source configuration
 
-- `origin`: _Required_ the package origin
-- `name`: _Required_ the package name
-- `version`: _Optional_ the package version
-- `auth_token`: _Optional_ the token to authenticate with the depot. Required when uploading packages.
-- `channel`: _Optional_ the channel to publish to. Can be overridden in get/put configuration. Defaults to 'unstable'.
+* `origin`: _Required_ the package origin
+* `name`: _Required_ the package name
+* `version`: _Optional_ the package version
+* `auth_token`: _Optional_ the token to authenticate with the depot. Required when uploading packages.
+* `channel`: _Optional_ the channel to check defaults to 'unstable'.
 
 ### Example
 
@@ -26,3 +26,12 @@ resource_types:
     repository: starkandwayne/habitat-resource
     type: docker-image
 ```
+
+## Behaviour
+
+### `out`: Upload a habitat package
+#### Parameters
+* `channel`: _Optional_ overrides the source level channel configuration
+
+### `in`: Download a habitat package
+Will download the \*.hart file for the habitat package.
