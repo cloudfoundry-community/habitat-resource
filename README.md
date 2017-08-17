@@ -8,12 +8,14 @@ a Concourse resource for publishing Habitat artifacts.
 - `name`: _Required_ the package name
 - `version`: _Optional_ the package version
 - `auth_token`: _Optional_ the token to authenticate with the depot. Required when uploading packages.
+- `channel`: _Optional_ the channel to publish to. Can be overridden in get/put configuration. Defaults to 'unstable'.
 
 ### Example
 
 ```
-- name: core-consul-pkg
+- name: stable-core-consul-pkg
   source:
+    channel: stable
     auth_token: <auth-token>
     name: consul
     origin: core
