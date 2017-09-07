@@ -22,6 +22,8 @@ if [[ ${channel} = "" ]]; then
   channel="$(jq -r '.source.channel // "unstable"' < "${payload}")"
 fi
 
+echo "Pushing to channel: '${channel}'"
+
 export HAB_ORIGIN=${origin}
 export HAB_AUTH_TOKEN="$(jq -r '.source.auth_token' < "${payload}")"
 
