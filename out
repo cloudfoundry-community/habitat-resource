@@ -22,7 +22,7 @@ if [[ ${channel} = "" ]]; then
   channel="$(jq -r '.source.channel // "unstable"' < "${payload}")"
 fi
 
-echo "Pushing to channel: '${channel}'"
+echo "Pushing to channel '${channel}'"
 
 export HAB_ORIGIN=${origin}
 export HAB_AUTH_TOKEN="$(jq -r '.source.auth_token' < "${payload}")"
@@ -37,6 +37,8 @@ pkg=${file/-x86_64-linux.hart}
 pkg=${pkg#$origin-$name-}
 pkg="${origin}/${name}/$(echo ${pkg} | sed "s#-#/#g")"
 
-hab pkg upload -c ${channel} $file
+hab pkg upload -c "${channel}" $file
 
 jq -n --arg pkg "${pkg}" '{version: { pkg: $pkg }}' >&3
+
+hab pkg promote "${pkg}" "${channel}"
