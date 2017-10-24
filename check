@@ -27,5 +27,5 @@ if [[ ${latest_version} == 'null' ]]; then
     jq '.ident | [ .origin, .name, .version, .release ] | [{pkg: join("/")}]' >&3
 else
   curl "${base_uri}/channels/${origin}/${channel}/pkgs/${name}${version}" 2>/dev/null | \
-    jq --arg current ${latest_version} '[ .package_list[] | { pkg: [ .origin, .name, .version, .release ] | join("/") | select(. >= $current) } ]' >&3
+    jq --arg current ${latest_version} '[ .data[] | { pkg: [ .origin, .name, .version, .release ] | join("/") | select(. >= $current) } ]' >&3
 fi
